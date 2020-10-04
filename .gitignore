@@ -1,0 +1,6 @@
+
+.DS_Store
+
+# React
+personalfinances-react/node_modules
+personalfinances-react/build
