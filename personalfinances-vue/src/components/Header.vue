@@ -1,0 +1,27 @@
+<template>
+    <div class="header"></div>
+</template>
+
+<script>
+export default {
+    data: function(){
+        return{
+            
+        }
+    }
+
+}
+</script>
+
+<style escoped>
+
+.header{
+    position: absolute;
+    top: 0;
+    width: 100vw;
+    height: 60px;
+    background-color: #ffffff;
+    border-bottom: 3px solid #b5b5b5;
+}
+
+</style>
