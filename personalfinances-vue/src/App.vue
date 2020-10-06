@@ -1,37 +1,9 @@
 <template>
   <div id="container">
-    <Header/>
-    <SideMenu/>
+    <Header />
+    <SideMenu currentPage="home" />
     <div class="inner">
-      <div class="row">
-            <MiniCard title="Saldo Atual" value="123.00" type="balance" icon="home" />
-            <MiniCard title="Receitas" value="123" type="revenue" icon="hand-holding-usd" />
-            <MiniCard title="Despesas" value="123" type="expense" icon="receipt" />
-            <MiniCard title="Balanço" value="123" type="profit" icon="piggy-bank" />
-        </div>
-        <div class="row">
-          <div class="card">
-              <label class="card-title">Despesas do mês</label>
-          </div>
-          <div class="card">
-              <label class="card-title">Receitas do mês</label>
-          </div>
-          <div class="card">
-              <label class="card-title">Receitas x Despesas dos últimos 6 meses</label>
-          </div>
-          <div class="card">
-              <label class="card-title">Frequência de gastos</label>
-          </div>
-      </div>
-      <button class="add-transaction">
-            <font-awesome-icon icon="plus" :style="{ color: '#FFF', fontSize:'18px' }"/>
-      </button>
-      <button class="add-revenue" >
-          <FaHandHoldingUsd color="#fff" size={19} />
-      </button>
-      <button class="add-expense" >
-          <FaReceipt color="#fff" size={16} />
-      </button>
+        <Home />
     </div>
   </div>
 </template>
@@ -39,7 +11,7 @@
 <script>
 import Header from './components/Header.vue'
 import SideMenu from './components/SideMenu.vue'
-import MiniCard from './components/MiniCard.vue'
+import Home from './components/Home.vue'
 
 
 export default {
@@ -47,7 +19,7 @@ export default {
   components: {
     Header,
     SideMenu,
-    MiniCard
+    Home
   }
 }
 </script>
@@ -82,187 +54,4 @@ export default {
       margin-left: 90px;
       margin-top: 73px;
   }
-
-  .header{
-      position: absolute;
-      top: 0;
-      width: 100vw;
-      height: 60px;
-      background-color: #ffffff;
-      border-bottom: 3px solid #b5b5b5;
-  }
-
-
-  .sidemenu{
-      position:absolute;
-      top:63px;
-      left:0;
-      height: calc(100vh - 63px);
-      background-color: #f5f5f5;
-  }
-  .sidemenu .sidemenu-options {
-      list-style: none;
-  }
-  .sidemenu .sidemenu-options .item {
-      margin: 10px 0;
-  }
-  .sidemenu .sidemenu-options .item a {
-      text-decoration: none;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      font-size: 12px;
-      padding: 10px 7px;
-      color: #ccc;
-  }
-  .sidemenu .sidemenu-options .item.active a {
-      color: #334ca5;
-  }
-  .sidemenu .sidemenu-options .item a i {
-      font-size: 18px;
-  }
-  .card{
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-    transition: 0.3s;
-    flex: 1;
-    margin: 10px;
-    min-width: 45%;
-    border-radius: 15px;
-    background-color: #ffffff;
-    padding: 10px;
-}
-
-.card .card-title {
-    font-weight: bold;
-    font-size: 14px;
-}
-
-
-
-
-.add-transaction {
-    position: absolute;
-    right: 10px;
-    bottom: 30px;
-    background-color: #2061bd;
-    /* padding: 17px 18px; */
-    border-radius: 50%;
-    color: #FFF;
-    font-size: 14px;
-    cursor: pointer;
-    width: 50px;
-    height: 50px;
-}
-
-.add-expense {
-    position: absolute;
-    /* padding: 15px 17px; */
-    border-radius: 50%;
-    color: #FFF;
-    font-size: 13px;
-    cursor: pointer;
-    background-color: #f24331;
-    width: 40px;
-    height: 40px;
-    right: 16px;
-    bottom: 30px;
-    opacity: 0;
-    pointer-events: none;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.add-expense.show {
-    animation: showAddExpense .5s ease-in-out;
-    bottom: 135px;
-    opacity: 1;
-    pointer-events: all;
-}
-
-.add-expense.hide {
-    animation: hideAddExpense .4s ease;
-    opacity: 0;
-    pointer-events: none;
-    cursor: pointer;
-    bottom: 30px;
-}
-
-.add-revenue {
-    position: absolute;
-    /* padding: 14px 15px; */
-    border-radius: 50%;
-    color: #FFF;
-    font-size: 13px;
-    cursor: pointer;
-    background-color: #4cae51;
-    opacity: 0;
-    right: 16px;
-    bottom: 30px;
-    pointer-events: none;
-    cursor: pointer;
-    width: 40px;
-    height: 40px;
-    justify-content: center;
-    align-items: center;
-}
-
-.add-revenue.show {
-    animation: showAddRevenue .5s;
-    bottom: 90px;
-    opacity: 1;
-    pointer-events: all;
-}
-.add-revenue.hide {
-    animation: hideAddRevenue .4s ease;
-    opacity: 0;
-    bottom: 30px;
-    pointer-events: none;
-    cursor: pointer;
-}
-
-@keyframes showAddExpense {
-    from {
-        bottom: 30px;
-        opacity: 0;
-    }
-    to {
-        bottom: 135px;
-        opacity: 1;
-    }
-}
-@keyframes hideAddExpense {
-    from {
-        bottom: 135px;
-        opacity: 1;
-    }
-    to {
-        bottom: 30px;
-        opacity: 0;
-    }
-}
-
-@keyframes showAddRevenue {
-    from {
-        bottom: 30px;
-        opacity: 0;
-    }
-    to {
-        bottom: 90px;
-        opacity: 1;
-    }
-}
-@keyframes hideAddRevenue {
-    from {
-        bottom: 90px;
-        opacity: 1;
-    }
-    to {
-        bottom: 30px;
-        opacity: 0;
-    }
-}
-
 </style>

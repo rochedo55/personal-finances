@@ -1,12 +1,12 @@
 <template>
     <div class="sidemenu">
         <ul class="sidemenu-options">
-            <li v-bind:key="botao.title" v-for="botao in botoes" class="item" v-bind:class="{active:botao.isActive}">
+            <li v-bind:key="botao.title" v-for="botao in getItems" class="item" v-bind:class="{active:botao.isActive}">
                 <a href="">
-                    <font-awesome-icon :icon="botao.icon" :style="{ color: '#ccc', fontSize:'18px' }"/>
+                    <font-awesome-icon  v-if="botao.isActive" :icon="botao.icon" :style="{ color: '#334ca5', fontSize:'18px' }"/>
+                    <font-awesome-icon  v-else :icon="botao.icon" :style="{ color: '#ccc', fontSize:'18px' }"/>
                     {{botao.title}}
                 </a>
-
             </li>
         </ul>
     </div>
@@ -32,12 +32,20 @@ export default {
                     icon:"hand-holding-usd",
                     isActive: false
                 }
-
-            ]
-            
+            ]            
+        }
+    },
+    props: ['currentPage'],
+    computed: {
+        getItems: function() {
+            return this.botoes.map(botao => {
+                return {
+                    ...botao,
+                    isActive: this.currentPage == botao.title ? true : false
+                }
+            })
         }
     }
-
 }
 </script>
 
