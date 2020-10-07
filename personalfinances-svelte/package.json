@@ -9,6 +9,7 @@
   "devDependencies": {
     "@rollup/plugin-commonjs": "^14.0.0",
     "@rollup/plugin-node-resolve": "^8.0.0",
+    "fa-svelte": "^3.1.0",
     "rollup": "^2.3.4",
     "rollup-plugin-livereload": "^2.0.0",
     "rollup-plugin-svelte": "^6.0.0",
@@ -16,6 +17,7 @@
     "svelte": "^3.0.0"
   },
   "dependencies": {
+    "@fortawesome/free-solid-svg-icons": "^5.15.1",
     "sirv-cli": "^1.0.0"
   }
 }
