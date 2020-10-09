@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "personalfinances-angular"
+    }
+  },
+  "defaultProject": "personalfinances-angular",
+  "cli": {
+    "analytics": "c4361728-a2cc-4f63-b28e-795f30a3c1da"
+  }
 }
