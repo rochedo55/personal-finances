@@ -7,15 +7,28 @@ import './style.css';
 import Header from '../../components/Header';
 import Sidemenu from '../../components/Sidemenu';
 import MiniCard from '../../components/MiniCard';
+import ButtonAddTransac from '../../components/ButtonAddTransac';
 
 export default function Home() {
 
-    const [showTransacOptions, setShowTransacOptions] = useState(false);
-    const [hideTransacOptions, setHideTransacOptions] = useState(false);
+    const [classTransacOptionsVisible, setClassTransacOptionsVisible] = useState('');
+    const [revenueSum, setRevenueSum] = useState(0);
+    const [expenseSum, setExpenseSum] = useState(0);
 
     function setTransacOptionsVisible() {
-        setHideTransacOptions(showTransacOptions);
-        setShowTransacOptions(!showTransacOptions);
+        if (classTransacOptionsVisible === '' || classTransacOptionsVisible === 'hide') {
+            setClassTransacOptionsVisible('show');
+        } else {
+            setClassTransacOptionsVisible('hide');
+        }
+    }
+
+    function addRevenue() {
+        setRevenueSum(revenueSum+1);
+    }
+
+    function addExpense() {
+        setExpenseSum(expenseSum+1);
     }
 
     return (
@@ -23,10 +36,10 @@ export default function Home() {
             <Header />
             <div className="inner">
                 <div className="row">
-                    <MiniCard title="Saldo Atual" value="123.00" type="balance" icon={<FaLandmark color="#fff" size={18} />} />
-                    <MiniCard title="Receitas" value="123" type="revenue" icon={<FaHandHoldingUsd color="#fff" size={24} />} />
-                    <MiniCard title="Despesas" value="123" type="expense" icon={<FaReceipt color="#fff" size={18} />} />
-                    <MiniCard title="Balanço" value="123" type="profit" icon={<FaPiggyBank color="#fff" size={20} />} />
+                    <MiniCard title="Saldo Atual" value={revenueSum - expenseSum} type="balance" icon={<FaLandmark color="#fff" size={18} />} />
+                    <MiniCard title="Receitas" value={revenueSum} type="revenue" icon={<FaHandHoldingUsd color="#fff" size={24} />} />
+                    <MiniCard title="Despesas" value={expenseSum} type="expense" icon={<FaReceipt color="#fff" size={18} />} />
+                    <MiniCard title="Balanço" value="0" type="profit" icon={<FaPiggyBank color="#fff" size={20} />} />
                 </div>
                 <div className="row">
                     <div className="card">
@@ -46,12 +59,18 @@ export default function Home() {
                 <button className="add-transaction" onClick={setTransacOptionsVisible}>
                     <FaPlus color="#fff" size={18} />
                 </button>
-                <button className={`add-revenue ${showTransacOptions ? "show" : hideTransacOptions ? "hide": ""}`}>
-                    <FaHandHoldingUsd color="#fff" size={19} />
-                </button>
-                <button className={`add-expense ${showTransacOptions ? "show" : hideTransacOptions ? "hide": ""}`}>
-                    <FaReceipt color="#fff" size={16} />
-                </button>
+                <ButtonAddTransac 
+                    classType="revenue" 
+                    classVisible={classTransacOptionsVisible} 
+                    onclick={addRevenue}
+                    icon={<FaHandHoldingUsd color="#fff" size={19} />} 
+                />
+                <ButtonAddTransac 
+                    classType="expense" 
+                    classVisible={classTransacOptionsVisible} 
+                    onclick={addExpense}
+                    icon={<FaReceipt color="#fff" size={16} />} 
+                />
             </div>
             <Sidemenu currentPage="home" />
         </div>
