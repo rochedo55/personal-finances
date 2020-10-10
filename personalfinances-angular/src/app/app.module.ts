@@ -2,9 +2,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './header/header.component';
-import { SideMenuComponent } from './side-menu/side-menu.component';
-import { MiniCardComponent } from './mini-card/mini-card.component';
+import {HeaderComponent} from './header.component';
+import {SideMenuComponent} from './sidemenu.component';
+import {MiniCardComponent} from './minicard.component';
+
 
 @NgModule({
   declarations: [
