@@ -1,10 +1,11 @@
-import { Component, Input } from '@angular/core'
+import { Component, Input, Output, EventEmitter } from '@angular/core'
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @Component({
     selector: 'minicard',
     template: ` <div class="mini-card {{ type }}">
     <div class="mini-card-icon-container">
-        {{ icon }}
+        <fa-icon [icon]="iconName" style="color: #fff"></fa-icon>
     </div>
     <div class="mini-card-body">
         <label class="mini-card-title">{{ title }}</label>
@@ -77,10 +78,10 @@ import { Component, Input } from '@angular/core'
     }
     `]
   })
-  export class MiniCardComponent {
-      @Input() title: string;
-      @Input() value: Number;
-      @Input() type: string;
-      @Input() icon: string;
-  }
+export class MiniCardComponent {
+    @Input() title: string;
+    @Input() value: Number;
+    @Input() type: string;
+    @Input() iconName: FontAwesomeModule;
+}
   

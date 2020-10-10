@@ -5,6 +5,10 @@ import { AppComponent } from './app.component';
 import {HeaderComponent} from './header.component';
 import {SideMenuComponent} from './sidemenu.component';
 import {MiniCardComponent} from './minicard.component';
+import {AddTransacButton} from './AddTransacButton.component';
+
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
 
 
 @NgModule({
@@ -12,10 +16,12 @@ import {MiniCardComponent} from './minicard.component';
     AppComponent,
     HeaderComponent,
     SideMenuComponent,
-    MiniCardComponent
+    MiniCardComponent,
+    AddTransacButton
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    FontAwesomeModule
   ],
   providers: [],
   bootstrap: [AppComponent]

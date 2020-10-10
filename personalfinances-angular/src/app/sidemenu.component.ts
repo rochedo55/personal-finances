@@ -1,21 +1,25 @@
 import {Component} from '@angular/core'
+import { faHome, faReceipt, faHandHoldingUsd } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
     selector: 'sidemenu',
     template: ` <div class="sidemenu">
     <ul class="sidemenu-options">
-        <li class="item" >
+        <li class="item active" >
             <a href="">
+                <fa-icon [icon]="faHome"></fa-icon>
                 Home
             </a>
         </li>
         <li class="item" >
             <a href="">
+                <fa-icon [icon]="faReceipt"></fa-icon>
                 Despesas
             </a>
         </li>
         <li class="item" >
             <a href="">
+                <fa-icon [icon]="faHandHoldingUsd"></fa-icon>
                 Receitas
             </a>
         </li>
@@ -53,8 +57,8 @@ import {Component} from '@angular/core'
     }`]
   })
   export class SideMenuComponent {
-      opts = [
-
-      ]
+    faReceipt = faReceipt;
+    faHome = faHome;
+    faHandHoldingUsd = faHandHoldingUsd;
   }
   
