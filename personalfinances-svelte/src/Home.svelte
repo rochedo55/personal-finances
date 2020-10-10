@@ -1,24 +1,37 @@
 <script>
     import MiniCard from './MiniCard.svelte';
+    import ButtonAddTransac from './ButtonAddTransac.svelte';
     import Icon from 'fa-svelte'
     import { faLandmark, faReceipt,faHandHoldingUsd, faPiggyBank, faPlus } from '@fortawesome/free-solid-svg-icons'
     
-    let showTransacOptions = false;
-    let hideTransacOptions = false;
+    let classTransacOptionsVisible = '';
+    let revenueSum = 0;
+    let expenseSum = 0;
 
     function setTransacOptionsVisible() {
-        hideTransacOptions = showTransacOptions;
-        showTransacOptions = !showTransacOptions;
+        if (classTransacOptionsVisible === '' || classTransacOptionsVisible === 'hide') {
+            classTransacOptionsVisible = 'show';
+        } else {
+            classTransacOptionsVisible = 'hide';
+        }
+    }
+
+    function addRevenue() {
+        revenueSum++;
+    }
+
+    function addExpense() {
+        expenseSum++;
     }
 </script>
 
 
 <div>
     <div class="row">
-        <MiniCard title="Saldo Atual" value="123.00" type="balance" icon={faLandmark} />
-        <MiniCard title="Receitas" value="123" type="revenue" icon={faHandHoldingUsd} />
-        <MiniCard title="Despesas" value="123" type="expense" icon={faReceipt} />
-        <MiniCard title="Balanço" value="123" type="profit" icon={faPiggyBank} />
+        <MiniCard title="Saldo Atual" value="{revenueSum - expenseSum}" type="balance" icon={faLandmark} />
+        <MiniCard title="Receitas" value="{revenueSum}" type="revenue" icon={faHandHoldingUsd} />
+        <MiniCard title="Despesas" value="{expenseSum}" type="expense" icon={faReceipt} />
+        <MiniCard title="Balanço" value="0" type="profit" icon={faPiggyBank} />
     </div>
     <div class="row">
         <div class="card">
@@ -37,12 +50,8 @@
     <button class="add-transaction" on:click={setTransacOptionsVisible}>
         <Icon icon={faPlus} />
     </button>
-    <button class="add-revenue {showTransacOptions ? 'show' : hideTransacOptions ? 'hide': ''}">
-        <Icon icon={faHandHoldingUsd} class="add-revenue-icon" />
-    </button>
-    <button class="add-expense {showTransacOptions ? 'show' : hideTransacOptions ? 'hide': ''}">
-        <Icon icon={faReceipt} class="add-expense-icon" />
-    </button>
+    <ButtonAddTransac classType="revenue" classVisible="{classTransacOptionsVisible}" icon={faReceipt} onclickFunction={addRevenue} />
+    <ButtonAddTransac classType="expense" classVisible="{classTransacOptionsVisible}" icon={faHandHoldingUsd} onclickFunction={addExpense} />
 </div>
 
 
@@ -74,113 +83,5 @@
         width: 50px;
         height: 50px;
     }
-    .add-expense {
-        position: absolute;
-        /* padding: 15px 17px; */
-        border-radius: 50%;
-        color: #FFF;
-        font-size: 13px;
-        cursor: pointer;
-        background-color: #f24331;
-        width: 40px;
-        height: 40px;
-        right: 16px;
-        bottom: 30px;
-        opacity: 0;
-        pointer-events: none;
-        cursor: pointer;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    .add-expense.show {
-        animation: showAddExpense .5s ease-in-out;
-        bottom: 135px;
-        opacity: 1;
-        pointer-events: all;
-    }
-    .add-expense.hide {
-        animation: hideAddExpense .4s ease;
-        opacity: 0;
-        pointer-events: none;
-        cursor: pointer;
-        bottom: 30px;
-    }
-    .add-expense :global(.add-expense-icon) {
-        font-size: 16px;
-    }
-    .add-revenue {
-        position: absolute;
-        /* padding: 14px 15px; */
-        border-radius: 50%;
-        color: #FFF;
-        font-size: 13px;
-        cursor: pointer;
-        background-color: #4cae51;
-        opacity: 0;
-        right: 16px;
-        bottom: 30px;
-        pointer-events: none;
-        cursor: pointer;
-        width: 40px;
-        height: 40px;
-        justify-content: center;
-        align-items: center;
-    }
-    .add-revenue.show {
-        animation: showAddRevenue .5s;
-        bottom: 90px;
-        opacity: 1;
-        pointer-events: all;
-    }
-    .add-revenue.hide {
-        animation: hideAddRevenue .4s ease;
-        opacity: 0;
-        bottom: 30px;
-        pointer-events: none;
-        cursor: pointer;
-    }
-    .add-revenue :global(.add-revenue-icon) {
-        font-size: 16px;
-    }
-    @keyframes showAddExpense {
-        from {
-            bottom: 30px;
-            opacity: 0;
-        }
-        to {
-            bottom: 135px;
-            opacity: 1;
-        }
-    }
-    @keyframes hideAddExpense {
-        from {
-            bottom: 135px;
-            opacity: 1;
-        }
-        to {
-            bottom: 30px;
-            opacity: 0;
-        }
-    }
-    @keyframes showAddRevenue {
-        from {
-            bottom: 30px;
-            opacity: 0;
-        }
-        to {
-            bottom: 90px;
-            opacity: 1;
-        }
-    }
-    @keyframes hideAddRevenue {
-        from {
-            bottom: 90px;
-            opacity: 1;
-        }
-        to {
-            bottom: 30px;
-            opacity: 0;
-        }
-    }
+    
 </style>
