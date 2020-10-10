@@ -1,15 +1,14 @@
-import {Component} from '@angular/core'
+import { Component, Input } from '@angular/core'
 
 @Component({
     selector: 'minicard',
-    template: ` <div class="mini-card" >
+    template: ` <div class="mini-card {{ type }}">
     <div class="mini-card-icon-container">
-        icone
-
+        {{ icon }}
     </div>
     <div class="mini-card-body">
-        <label class="mini-card-title">titulo</label>
-        <span>R$ 123</span>
+        <label class="mini-card-title">{{ title }}</label>
+        <span>R$ {{ value }}</span>
     </div>                    
 </div>`,
     styles: [`.mini-card{
@@ -79,5 +78,9 @@ import {Component} from '@angular/core'
     `]
   })
   export class MiniCardComponent {
+      @Input() title: string;
+      @Input() value: Number;
+      @Input() type: string;
+      @Input() icon: string;
   }
   

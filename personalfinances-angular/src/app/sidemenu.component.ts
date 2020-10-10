@@ -6,7 +6,17 @@ import {Component} from '@angular/core'
     <ul class="sidemenu-options">
         <li class="item" >
             <a href="">
-                link
+                Home
+            </a>
+        </li>
+        <li class="item" >
+            <a href="">
+                Despesas
+            </a>
+        </li>
+        <li class="item" >
+            <a href="">
+                Receitas
             </a>
         </li>
     </ul>
@@ -20,6 +30,7 @@ import {Component} from '@angular/core'
     }
     .sidemenu .sidemenu-options {
         list-style: none;
+        padding-inline-start: 0;
     }
     .sidemenu .sidemenu-options .item {
         margin: 10px 0;
@@ -42,5 +53,8 @@ import {Component} from '@angular/core'
     }`]
   })
   export class SideMenuComponent {
+      opts = [
+
+      ]
   }
   
