@@ -8,9 +8,13 @@ import Header from '../../components/Header';
 import Sidemenu from '../../components/Sidemenu';
 import MiniCard from '../../components/MiniCard';
 import ButtonAddTransac from '../../components/ButtonAddTransac';
+import AddExpenseModal from '../../components/AddExpenseModal';
+import AddRevenueModal from '../../components/AddRevenueModal';
 
 export default function Home() {
-
+    
+    const [addExpenseModalVisible, setAddExpenseModalVisible] = useState(false);
+    const [addRevenueModalVisible, setAddRevenueModalVisible] = useState(false);
     const [classTransacOptionsVisible, setClassTransacOptionsVisible] = useState('');
     const [revenueSum, setRevenueSum] = useState(0);
     const [expenseSum, setExpenseSum] = useState(0);
@@ -23,12 +27,14 @@ export default function Home() {
         }
     }
 
-    function addRevenue() {
-        setRevenueSum(revenueSum+1);
+    function addRevenue(value) {
+        setRevenueSum(revenueSum + value);
+        
     }
 
-    function addExpense() {
-        setExpenseSum(expenseSum+1);
+    function addExpense(value) {
+        setExpenseSum(expenseSum + value);
+        
     }
 
     return (
@@ -62,17 +68,28 @@ export default function Home() {
                 <ButtonAddTransac 
                     classType="revenue" 
                     classVisible={classTransacOptionsVisible} 
-                    onclick={addRevenue}
+                    onclick={() => setAddRevenueModalVisible(true)}
                     icon={<FaHandHoldingUsd color="#fff" size={19} />} 
                 />
                 <ButtonAddTransac 
                     classType="expense" 
                     classVisible={classTransacOptionsVisible} 
-                    onclick={addExpense}
+                    onclick={() => setAddExpenseModalVisible(true)}
                     icon={<FaReceipt color="#fff" size={16} />} 
                 />
             </div>
             <Sidemenu currentPage="home" />
+
+            <AddExpenseModal 
+                visible={addExpenseModalVisible} 
+                setVisible={setAddExpenseModalVisible}
+                addExpenseCallback={addExpense}
+            />
+            <AddRevenueModal 
+                visible={addRevenueModalVisible} 
+                setVisible={setAddRevenueModalVisible} 
+                addRevenueCallback={addRevenue}
+            />
         </div>
     );
 }
