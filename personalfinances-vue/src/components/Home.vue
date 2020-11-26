@@ -25,17 +25,20 @@
         </button>
         <ButtonAddTransac class="add-revenue" :classVisible="classTransacOptionsVisible" iconName="hand-holding-usd" v-on:onclick="addRevenue" />
         <ButtonAddTransac class="add-expense" :classVisible="classTransacOptionsVisible" iconName="receipt" v-on:onclick="addExpense" />
+        <AddExpenseModal :classVisible="visible"/>
     </div>
 </template>
 
 <script>
 import MiniCard from './MiniCard.vue'
 import ButtonAddTransac from './ButtonAddTransac'
+import AddExpenseModal from './AddExpenseModal'
 
 export default {
   components: {
     MiniCard,
-    ButtonAddTransac
+    ButtonAddTransac,
+    AddExpenseModal
   },
   data: function() {
       return {
@@ -43,7 +46,8 @@ export default {
           hideTransacOptions: false,
           revenueSum: 0,
           expenseSum: 0,
-          classTransacOptionsVisible: ''
+          classTransacOptionsVisible: '',
+          visible : 'flex'
       }
   },
   methods: {
@@ -58,6 +62,7 @@ export default {
           this.revenueSum++;
       },
       addExpense: function() {
+          <AddExpenseModal />
           this.expenseSum++;
       }
   } 
