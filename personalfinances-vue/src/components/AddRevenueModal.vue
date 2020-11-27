@@ -1,33 +1,33 @@
 <template>
-    <div v-bind:class="{ show: classVisible}" id="modalAddExpense" class="modal">
-        <div class="modal-content expense">
+    <div v-bind:class="{show: classVisible}" id="modalAddRevenue" class="modal">
+        <div class="modal-content revenue">
             <div class="modal-header">
-                <h2>Adicionar Despesa</h2>
+                <h2>Adicionar Receita</h2>
                 <span class="close" @click="close">&times;</span>
             </div>
-            <form @submit.prevent="AddExpense">
+            <form @submit.prevent="addRevenue">
                 <div class="modal-body">
                     <div class="form-group">
-                        <p>Adicionar o titulo da despesa</p>
+                        <p>Adicione o titulo da receita</p>
                         <input 
                             type="text" 
-                            id="titleExpense" 
-                            v-model="expenseTitle"
-                            placeholder="Titulo..." 
+                            id="tituloReceita" 
+                            placeholder="Titulo..."
+                            v-model="title"
                         />
                     </div>
                     <div class="form-group">
-                        <p>Adicione o valor da despesa</p>
+                        <p>Adicione o valor da receita</p>
                         <input 
                             type="number" 
-                            id="valueExpense" 
-                            v-model="expenseValue"
-                            placeholder="Valor"
+                            id="valorReceita" 
+                            placeholder="Valor..."
+                            v-model="value"
                         />
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="add" id="btnAddExpense" type="submit">Adicionar</button>
+                    <button class="add" id="btnAddReceita" type="submit">Adicionar</button>
                 </div>
             </form>
         </div>
@@ -36,32 +36,31 @@
 
 <script>
 export default {
-    props: [ 'classVisible'],
-    data() {
-        return {
-            expenseTitle : '',
-            expenseValue : '' 
+    props:['classVisible'],
+    data(){
+        return{
+            title: '',
+            value: ''
         }
     },
     methods: {
-        close(){
-            this.$emit('setExpenseModalVisible', false);
+        close: function() {
+            this.$emit('setRevenueModalVisible', false);
         },
-        AddExpense(){
-            if (this.expenseTitle.trim() === '' || this.expenseValue === '') {
+        addRevenue: function() {
+            if (this.title.trim() === '' || this.value.trim() === '') {
                 alert("Todos os campos são obrigatórios");
                 return;
             }
-            
-            if (this.expenseValue < 0) {
+
+            if (this.value < 0) {
                 alert("Valor da receita inválido");
                 return;
             }
 
-            this.$emit('addExpenseCallback', Number(this.expenseValue));
+            this.$emit('addRevenueCallback', Number(this.value));
             this.close();
-        }   
-
+        }
     }
 
 }
@@ -100,15 +99,12 @@ export default {
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
 }
 
-
-.modal-content.expense {
-    border: 3px solid #f24331;
-} 
-
-.modal-content.expense button.add {
-    background-color: #f24331;
+.modal-content.revenue {
+    border: 3px solid #4cae51;
 }
-
+.modal-content.revenue button.add {
+    background-color: #4cae51;
+}
 .modal-content .modal-header {
     padding: 5px 16px;
     border-bottom: 1px solid rgba(0,0,0,0.120);

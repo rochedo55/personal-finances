@@ -23,9 +23,28 @@
         <button class="add-transaction" v-on:click="setTransacOptionsVisible">
             <font-awesome-icon icon="plus" :style="{ color: '#FFF', fontSize:'18px' }"/>
         </button>
-        <ButtonAddTransac class="add-revenue" :classVisible="classTransacOptionsVisible" iconName="hand-holding-usd" v-on:onclick="addRevenue" />
-        <ButtonAddTransac class="add-expense" :classVisible="classTransacOptionsVisible" iconName="receipt" v-on:onclick="addExpense" />
-        <AddExpenseModal :classVisible="visible"/>
+        <ButtonAddTransac 
+            class="add-revenue" 
+            :classVisible="classTransacOptionsVisible" 
+            iconName="hand-holding-usd" 
+            v-on:onclick="setRevenueModalVisible(true)" 
+        />
+        <ButtonAddTransac 
+            class="add-expense" 
+            :classVisible="classTransacOptionsVisible" 
+            iconName="receipt" 
+            v-on:onclick="setExpenseModalVisible(true)" 
+        />
+        <AddExpenseModal 
+            :classVisible="expenseModalVisible" 
+            v-on:addExpenseCallback="addExpense" 
+            v-on:setExpenseModalVisible="setExpenseModalVisible" 
+        />
+        <AddRevenueModal
+            :classVisible="revenueModalVisible"
+            v-on:addRevenueCallback="addRevenue"
+            v-on:setRevenueModalVisible="setRevenueModalVisible"
+        />
     </div>
 </template>
 
@@ -33,12 +52,14 @@
 import MiniCard from './MiniCard.vue'
 import ButtonAddTransac from './ButtonAddTransac'
 import AddExpenseModal from './AddExpenseModal'
+import AddRevenueModal from './AddRevenueModal'
 
 export default {
   components: {
     MiniCard,
     ButtonAddTransac,
-    AddExpenseModal
+    AddExpenseModal,
+    AddRevenueModal
   },
   data: function() {
       return {
@@ -47,7 +68,8 @@ export default {
           revenueSum: 0,
           expenseSum: 0,
           classTransacOptionsVisible: '',
-          visible : 'flex'
+          expenseModalVisible: false,
+          revenueModalVisible: false
       }
   },
   methods: {
@@ -58,13 +80,19 @@ export default {
               this.classTransacOptionsVisible = 'hide';
           }
       },
-      addRevenue: function() {
-          this.revenueSum++;
+      addRevenue: function(value) {
+          this.revenueSum += value;
       },
-      addExpense: function() {
-          <AddExpenseModal />
-          this.expenseSum++;
+      addExpense: function(value) {
+          this.expenseSum += value;
+      },
+      setExpenseModalVisible: function(isVisible) {
+          this.expenseModalVisible = isVisible;
+      },
+      setRevenueModalVisible: function(isVisible) {
+          this.revenueModalVisible = isVisible;
       }
+
   } 
 }
 </script>
