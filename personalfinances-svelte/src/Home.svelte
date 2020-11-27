@@ -1,12 +1,17 @@
 <script>
     import MiniCard from './MiniCard.svelte';
     import ButtonAddTransac from './ButtonAddTransac.svelte';
-    import Icon from 'fa-svelte'
+    import AddExpenseModal from './AddExpenseModal.svelte';
+    import AddRevenueModal from './AddRevenueModal.svelte';
+
+    import Icon from 'fa-svelte';
     import { faLandmark, faReceipt,faHandHoldingUsd, faPiggyBank, faPlus } from '@fortawesome/free-solid-svg-icons'
     
     let classTransacOptionsVisible = '';
     let revenueSum = 0;
     let expenseSum = 0;
+    let expenseModalVisible = false;
+    let revenueModalVisible = false;
 
     function setTransacOptionsVisible() {
         if (classTransacOptionsVisible === '' || classTransacOptionsVisible === 'hide') {
@@ -16,12 +21,20 @@
         }
     }
 
-    function addRevenue() {
-        revenueSum++;
+    function addRevenue(value) {
+        revenueSum += value;
     }
 
-    function addExpense() {
-        expenseSum++;
+    function addExpense(value) {
+        expenseSum += value;
+    }
+
+    function setExpenseModalVisible(isVisible) {
+        expenseModalVisible = isVisible;
+    }
+
+    function setRevenueModalVisible(isVisible) {
+        revenueModalVisible = isVisible;
     }
 </script>
 
@@ -50,8 +63,28 @@
     <button class="add-transaction" on:click={setTransacOptionsVisible}>
         <Icon icon={faPlus} />
     </button>
-    <ButtonAddTransac classType="revenue" classVisible="{classTransacOptionsVisible}" icon={faReceipt} onclickFunction={addRevenue} />
-    <ButtonAddTransac classType="expense" classVisible="{classTransacOptionsVisible}" icon={faHandHoldingUsd} onclickFunction={addExpense} />
+    <ButtonAddTransac
+        classType="revenue" 
+        classVisible="{classTransacOptionsVisible}" 
+        icon={faReceipt} 
+        onclickFunction={() => setRevenueModalVisible(true)} 
+    />
+    <ButtonAddTransac 
+        classType="expense" 
+        classVisible="{classTransacOptionsVisible}" 
+        icon={faHandHoldingUsd} 
+        onclickFunction={() => setExpenseModalVisible(true)}
+    />
+    <AddExpenseModal 
+        isVisible={expenseModalVisible}
+        setVisible={setExpenseModalVisible}
+        addExpenseCallback={addExpense}
+    />
+    <AddRevenueModal
+        isVisible={revenueModalVisible}
+        setVisible={setRevenueModalVisible}
+        addRevenueCallback={addRevenue}
+    />
 </div>
 
 
