@@ -1,0 +1,32 @@
+<div id="modalAddExpense" class="modal" [ngClass]="{ show:isVisible }">
+    <div class="modal-content expense">
+        <div class="modal-header">
+            <h2>Adicionar Despesa</h2>
+            <span class="close" (click)="close()">&times;</span>
+        </div>
+        <form (ngSubmit)="addExpense()" [formGroup]="expenseForm">
+            <div class="modal-body">
+                <div class="form-group">
+                    <p>Adicionar o titulo da despesa</p>
+                    <input 
+                        type="text" 
+                        id="titleExpense" 
+                        placeholder="Titulo..." 
+                        formControlName="title"
+                    />
+                </div>
+                <div class="form-group">
+                    <p>Adicione o valor da despesa</p>
+                    <input 
+                        type="number" 
+                        id="valueExpense" 
+                        formControlName="value"
+                    />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="add" id="btnAddExpense" type="submit">Adicionar</button>
+            </div>
+        </form>
+    </div>
+</div>

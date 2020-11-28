@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { faPlus, faReceipt, faHandHoldingUsd, faPiggyBank, faLandmark } from '@fortawesome/free-solid-svg-icons';
 
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -19,6 +20,9 @@ export class AppComponent {
 
   classTransacOptionsVisible = '';
 
+  expenseModalVisible = false;
+  revenueModalVisible = false;
+
   setTransacOptionsVisible() {
     if (this.classTransacOptionsVisible === '' || this.classTransacOptionsVisible == 'hide') {
       this.classTransacOptionsVisible = 'show';
@@ -27,11 +31,19 @@ export class AppComponent {
     }
   }
 
-  addRevenue() {
-    this.revenueSum++;
+  addRevenue(value) {
+    this.revenueSum += value;
   }
 
-  addExpense() {
-    this.expenseSum++;
+  addExpense(value) {
+    this.expenseSum += value;
+  }
+
+  setExpenseModalVisible(isVisible) {
+    this.expenseModalVisible = isVisible;
+  }
+
+  setRevenueModalVisible(isVisible) {
+    this.revenueModalVisible = isVisible;
   }
 }

@@ -25,7 +25,10 @@
     <button class="add-transaction" (click)="setTransacOptionsVisible()">
       <fa-icon [icon]="faPlus"></fa-icon>
     </button>
-    <button-add-transac [iconName]="faHandHoldingUsd" [classVisible]="classTransacOptionsVisible" classType="revenue" (onClick)="addRevenue()"></button-add-transac>
-    <button-add-transac [iconName]="faReceipt" [classVisible]="classTransacOptionsVisible" classType="expense" (onClick)="addExpense()"></button-add-transac>
+    <button-add-transac [iconName]="faHandHoldingUsd" [classVisible]="classTransacOptionsVisible" classType="revenue" (onClick)="setRevenueModalVisible(true)"></button-add-transac>
+    <button-add-transac [iconName]="faReceipt" [classVisible]="classTransacOptionsVisible" classType="expense" (onClick)="setExpenseModalVisible(true)"></button-add-transac>
+    
+    <add-expense-modal [isVisible]="expenseModalVisible" (setVisible)="setExpenseModalVisible($event)" (addExpenseCallback)="addExpense($event)"></add-expense-modal>
+    <add-revenue-modal [isVisible]="revenueModalVisible" (setVisible)="setRevenueModalVisible($event)" (addRevenueCallback)="addRevenue($event)"></add-revenue-modal>
   </div>
 </div>
