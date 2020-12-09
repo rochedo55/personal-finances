@@ -12,7 +12,7 @@ Consiste em um sistema web para gerenciar finâncias pessoais. Desenvolvido util
 
 ## Iniciando backend
 ```
-cd ../server/
+cd server/
 npm install
 npm start
 ```
