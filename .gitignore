@@ -4,3 +4,6 @@
 # React
 personalfinances-react/node_modules
 personalfinances-react/build
+
+# Server
+server/node_modules

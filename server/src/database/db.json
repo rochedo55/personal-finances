@@ -1,0 +1,124 @@
+{
+  "revenues": [
+    {
+      "date": "2020-12-08T03:36:53.230Z",
+      "title": "Salario",
+      "value": 2000
+    },
+    {
+      "date": "2020-12-03T00:00:00.000Z",
+      "title": "Bolsa",
+      "value": 1000
+    },
+    {
+      "title": "telefone",
+      "value": 150,
+      "id": "4e2828eb-98b1-420b-bcc0-454952067e98",
+      "date": "2020-12-02T00:00:00.000Z"
+    },
+    {
+      "title": "site",
+      "value": 1000,
+      "id": "8fadfacd-4381-4874-b0ef-3b88d6afb27e",
+      "date": "2020-11-18T00:00:00.000Z"
+    },
+    {
+      "title": "Calça",
+      "value": 80,
+      "id": "c378198f-7292-45c5-b3b4-c5e4b7783ca0",
+      "date": "2020-11-25T00:00:00.000Z"
+    },
+    {
+      "title": "Venda do xbox",
+      "value": 1100,
+      "id": "2b4cd80e-6037-4b90-b361-81ee56cd5f3e",
+      "date": "2020-12-01T00:00:00.000Z"
+    },
+    {
+      "title": "Site para a tia",
+      "value": 1200,
+      "id": "40d9af7e-a058-41f8-94f7-2401c2d5cc76",
+      "date": "2020-11-25T00:00:00.000Z"
+    },
+    {
+      "title": "Décimo terceiro",
+      "value": 1200,
+      "id": "58293f9a-027f-43a4-a429-269a14c67c29",
+      "date": "2020-12-02T00:00:00.000Z"
+    },
+    {
+      "title": "Bonus",
+      "value": 500,
+      "id": "551fa1f3-5fc0-4041-85c4-321ee133ab0e",
+      "date": "2020-12-06T00:00:00.000Z"
+    }
+  ],
+  "expenses": [
+    {
+      "title": "cafe",
+      "value": 20,
+      "id": "046e402a-eadd-4567-9c72-cae1b320df5f",
+      "date": "2020-12-08T03:36:53.230Z"
+    },
+    {
+      "title": "lanche",
+      "value": 65,
+      "id": "0ef10179-0f5e-4b99-96c6-281000b34ac4",
+      "date": "2020-12-08T03:44:36.715Z"
+    },
+    {
+      "title": "dizimo",
+      "value": 150,
+      "id": "93dccb69-b46a-4caf-8761-98aff05811b8",
+      "date": "2020-12-08T03:58:58.652Z"
+    },
+    {
+      "title": "dizimo",
+      "value": 150,
+      "id": "01ca3f60-d757-4a37-985e-148fffc6850c",
+      "date": "2020-12-03T00:00:00.000Z"
+    },
+    {
+      "title": "carro",
+      "value": 800,
+      "id": "6fc4c105-69eb-42c9-af59-96c3a8af57b3",
+      "date": "2020-11-18T00:00:00.000Z"
+    },
+    {
+      "title": "bolsa",
+      "value": 95,
+      "id": "a7c394b7-bfb6-4db2-87b8-fb97a9d86598",
+      "date": "2020-12-05T00:00:00.000Z"
+    },
+    {
+      "title": "cinema",
+      "value": 50,
+      "id": "9999ee0a-b5c3-452f-b8d5-6652b52b6e3e",
+      "date": "2020-11-06T00:00:00.000Z"
+    },
+    {
+      "title": "Shopping",
+      "value": 65,
+      "id": "e12e1ac2-bf22-4c6c-be47-058bb14d8272",
+      "date": "2020-12-06T00:00:00.000Z"
+    },
+    {
+      "title": "Compra do oculos",
+      "value": 400,
+      "id": "c8806fec-1d31-42c7-a3d5-a44f3af1f8cc",
+      "date": "2020-12-04T00:00:00.000Z"
+    },
+    {
+      "title": "Almoço",
+      "value": 15,
+      "id": "45059645-e468-491c-b84a-a65ac8f61cbc",
+      "date": "2020-11-15T00:00:00.000Z"
+    },
+    {
+      "title": "Combustivel",
+      "value": 80,
+      "id": "e48b86a2-da2f-4594-aedd-3789d513cd24",
+      "date": "2020-12-05T00:00:00.000Z"
+    }
+  ]
+}
