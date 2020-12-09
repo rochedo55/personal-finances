@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 
+import api from '../services/api';
 
 export default function AddRevenueModal({ visible, setVisible, addRevenueCallback }) {
     const [revenueTitle, setRevenueTitle] = useState("");
     const [revenueValue, setRevenueValue] = useState(0);
+    const [revenueDate, setRevenueDate] = useState("");
 
     function addRevenue(event) {
         event.preventDefault();
 
-        if (!revenueValue || revenueTitle.trim() === '') {
+        if (!revenueValue || revenueTitle.trim() === '' || revenueDate === "") {
             alert("Todos os campos são obrigatórios");
             return;
         }
@@ -18,8 +20,19 @@ export default function AddRevenueModal({ visible, setVisible, addRevenueCallbac
             return;
         }
 
-        setVisible(false);
-        addRevenueCallback(revenueValue);
+        api
+            .post("revenues/", {
+                title: revenueTitle,
+                value: revenueValue,
+                date: revenueDate
+            })
+            .then(() => {
+                setVisible(false);
+                addRevenueCallback();
+            })
+            .catch((error) => {
+                alert("Ops! Algo deu errado. Não foi possível salvar receita. Por favor tente novamente");
+            });
     }
 
     return (
@@ -48,7 +61,17 @@ export default function AddRevenueModal({ visible, setVisible, addRevenueCallbac
                                 id="valorReceita" 
                                 placeholder="Valor..."
                                 value={revenueValue}
-                                onChange={(event) => setRevenueValue(parseFloat(event.target.value))}
+                                onChange={(event) => setRevenueValue(event.target.value ? parseFloat(event.target.value) : "")}
+                            />
+                        </div>
+                        <div className="form-group">
+                            <p>Adicione a data da receita</p>
+                            <input 
+                                type="date" 
+                                id="dateReceita" 
+                                placeholder="18/11/2020"
+                                value={revenueDate}
+                                onChange={(event) => setRevenueDate(event.target.value)}
                             />
                         </div>
                     </div>

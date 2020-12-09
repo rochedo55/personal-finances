@@ -27,18 +27,25 @@ button:focus {
     margin-top: 73px;
 }
 
+
 .header{
-    position: absolute;
+    position: fixed;
     top: 0;
     width: 100vw;
     height: 60px;
     background-color: #ffffff;
     border-bottom: 3px solid #b5b5b5;
+    display: flex;
+    align-items: center;
+}
+
+.header img {
+    margin-left: 50px;
 }
 
 
 .sidemenu{
-    position:absolute;
+    position:fixed;
     top:63px;
     left:0;
     height: calc(100vh - 63px);
@@ -164,4 +171,99 @@ input {
     margin: 10px 0;
     color: #fff;
     font-size: 14px;
+}
+
+
+
+
+.add-transaction {
+    position: fixed;
+    right: 10px;
+    bottom: 30px;
+    background-color: #2061bd;
+    /* padding: 17px 18px; */
+    border-radius: 50%;
+    color: #FFF;
+    font-size: 14px;
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+}
+
+.add-expense {
+    position: absolute;
+    /* padding: 15px 17px; */
+    border-radius: 50%;
+    color: #FFF;
+    font-size: 13px;
+    cursor: pointer;
+    background-color: #f24331;
+    width: 40px;
+    height: 40px;
+    right: 16px;
+    bottom: 30px;
+    opacity: 0;
+    pointer-events: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.add-expense.show {
+    animation: showAddExpense .5s ease-in-out;
+    bottom: 135px;
+    opacity: 1;
+    pointer-events: all;
+}
+
+.add-expense.hide {
+    animation: hideAddExpense .4s ease;
+    opacity: 0;
+    pointer-events: none;
+    cursor: pointer;
+    bottom: 30px;
+}
+
+.add-revenue {
+    position: absolute;
+    /* padding: 14px 15px; */
+    border-radius: 50%;
+    color: #FFF;
+    font-size: 13px;
+    cursor: pointer;
+    background-color: #4cae51;
+    opacity: 0;
+    right: 16px;
+    bottom: 30px;
+    pointer-events: none;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    justify-content: center;
+    align-items: center;
+}
+
+.add-revenue.show {
+    animation: showAddRevenue .5s;
+    bottom: 90px;
+    opacity: 1;
+    pointer-events: all;
+}
+.add-revenue.hide {
+    animation: hideAddRevenue .4s ease;
+    opacity: 0;
+    bottom: 30px;
+    pointer-events: none;
+    cursor: pointer;
+}
+
+
+
+
+
+@media (max-width: 720px) {
+    .inner {
+        margin-left: 83px;
+    }
 }

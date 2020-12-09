@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 
+import api from '../services/api';
 
 export default function AddExpenseModal({ visible, setVisible, addExpenseCallback }) {
     const [expenseTitle, setExpenseTitle] = useState("");
     const [expenseValue, setExpenseValue] = useState(0);
+    const [expenseDate, setExpenseDate] = useState("");
     
     function addExpense(event) {
         event.preventDefault();
 
-        if (!expenseValue || expenseTitle.trim() === '') {
+        if (!expenseValue || expenseTitle.trim() === '' || expenseDate === "") {
             alert("Todos os campos são obrigatórios");
             return;
         }
@@ -18,8 +20,19 @@ export default function AddExpenseModal({ visible, setVisible, addExpenseCallbac
             return;
         }
 
-        setVisible(false);
-        addExpenseCallback(expenseValue);
+        api
+            .post("expenses/", {
+                value: expenseValue,
+                title: expenseTitle,
+                date: expenseDate
+            })
+            .then(() => {
+                setVisible(false);
+                addExpenseCallback();
+            })
+            .catch((error) => {
+                alert("Ops! Algo deu errado. Não foi possível salvar despesa. Por favor tente novamente");
+            });
     }
 
     return (
@@ -46,8 +59,19 @@ export default function AddExpenseModal({ visible, setVisible, addExpenseCallbac
                             <input 
                                 type="number" 
                                 id="valueExpense" 
-                                placeholder="Valor..." 
-                                onChange={(event) => setExpenseValue(parseFloat(event.target.value)) } 
+                                placeholder="Valor..."
+                                value={expenseValue}
+                                onChange={(event) => setExpenseValue(event.target.value ? parseFloat(event.target.value) : "") } 
+                            />
+                        </div>
+                        <div className="form-group">
+                            <p>Adicione a data da despesa</p>
+                            <input 
+                                type="date" 
+                                id="dateExpense" 
+                                placeholder="" 
+                                value={expenseDate}
+                                onChange={(event) => setExpenseDate(event.target.value) } 
                             />
                         </div>
                     </div>
