@@ -1,15 +1,18 @@
 <script>
+    import api from './services/api';
+
     export let setVisible;
     export let isVisible;
     export let addRevenueCallback;
 
     let title;
     let value;
+    let date;
 
     function addRevenue(e) {
         e.preventDefault();
 
-        if (title.trim() === '' || !value) {
+        if (title === '' || !value || date === '') {
             alert("Todos os campos são obrigatórios");
             return;
         }
@@ -19,10 +22,19 @@
             return;
         }
 
-        addRevenueCallback(value);
-        title = null;
-        value = null;
-        setVisible(false);
+        api
+            .post("revenues/", { title, value, date })
+            .then(() => {
+                addRevenueCallback();
+                setVisible(false);
+
+                title = ''
+                value = ''
+                date = ''
+            })
+            .catch(() => {
+                alert("Ops! Algo deu errado. Não foi possível salvar receita. Por favor tente novamente");
+            });
     }
 </script>
 
@@ -51,6 +63,15 @@
                         id="valueExpense" 
                         placeholder="Valor..." 
                         bind:value={value}
+                    />
+                </div>
+                <div className="form-group">
+                    <p>Adicione a data da receita</p>
+                    <input 
+                        type="date" 
+                        id="dateReceita" 
+                        placeholder="18/11/2020"
+                        bind:value={date}
                     />
                 </div>
             </div>

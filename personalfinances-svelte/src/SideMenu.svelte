@@ -46,7 +46,7 @@
 
 <style>
     .sidemenu{
-        position:absolute;
+        position:fixed;
         top:63px;
         left:0;
         height: calc(100vh - 63px);

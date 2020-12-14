@@ -1,11 +1,26 @@
 <script>
+    import { onMount } from 'svelte';
+
+    import Icon from 'fa-svelte';
+    import { 
+        faLandmark, 
+        faReceipt, 
+        faHandHoldingUsd, 
+        faPiggyBank, 
+        faPlus 
+     } from '@fortawesome/free-solid-svg-icons';
+
+    import Chart from 'chart';
+    import Line from "svelte-chartjs/src/Line.svelte";
+
     import MiniCard from './MiniCard.svelte';
     import ButtonAddTransac from './ButtonAddTransac.svelte';
     import AddExpenseModal from './AddExpenseModal.svelte';
     import AddRevenueModal from './AddRevenueModal.svelte';
 
-    import Icon from 'fa-svelte';
-    import { faLandmark, faReceipt,faHandHoldingUsd, faPiggyBank, faPlus } from '@fortawesome/free-solid-svg-icons'
+    import api from './services/api';
+
+    import { groupTransactionsByDate } from './utils/TransactionsUtils';
     
     let classTransacOptionsVisible = '';
     let revenueSum = 0;
@@ -13,20 +28,33 @@
     let expenseModalVisible = false;
     let revenueModalVisible = false;
 
+    let balance = 0;
+    let currentMoney = 0;
+    let expensesCurrentMonth = [];
+    let revenuesCurrentMonth = [];
+    let chartDataRevenue = {};
+    let chartDataExpense = {};
+    let loadedApiData = false;
+
+    let commonChartOptions = {
+        maintainAspectRatio: false,
+        responsive: true,
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+
+    
     function setTransacOptionsVisible() {
         if (classTransacOptionsVisible === '' || classTransacOptionsVisible === 'hide') {
             classTransacOptionsVisible = 'show';
         } else {
             classTransacOptionsVisible = 'hide';
         }
-    }
-
-    function addRevenue(value) {
-        revenueSum += value;
-    }
-
-    function addExpense(value) {
-        expenseSum += value;
     }
 
     function setExpenseModalVisible(isVisible) {
@@ -36,28 +64,88 @@
     function setRevenueModalVisible(isVisible) {
         revenueModalVisible = isVisible;
     }
+
+
+    function getTransactions() {
+        loadedApiData = false;
+
+        Promise
+            .all([
+                api.get("/metrics"), 
+                api.get("/expenses/?currentMonth=true"),
+                api.get("/revenues/?currentMonth=true")
+            ])
+            .then(results => {
+                const metrics = results[0].data;
+
+                balance = metrics.balance;
+                currentMoney = metrics.currentMoney;
+                expenseSum = metrics.expensesCurrentMonthSum;
+                revenueSum = metrics.revenuesCurrentMonthSum;
+
+                expensesCurrentMonth = groupTransactionsByDate(results[1].data);
+                revenuesCurrentMonth = groupTransactionsByDate(results[2].data);
+
+                chartDataRevenue = {
+                        labels: revenuesCurrentMonth.map(revenue => revenue[0]),
+                        datasets: [{
+                            label: "Despesas por data",
+                            fill: true,
+                            data: revenuesCurrentMonth.map(revenue => revenue[1]),
+                            borderColor: "rgb(50, 168, 82)",
+                            backgroundColor: "rgb(50, 168, 82)"
+                        }]
+                }
+                
+                chartDataExpense = {
+                        labels: expensesCurrentMonth.map(expense => expense[0]),
+                        datasets: [{
+                            label: "Despesas por data",
+                            fill: true,
+                            data: expensesCurrentMonth.map(expense => expense[1]),
+                            borderColor: "rgb(255, 99, 132)",
+                            backgroundColor: "rgb(255, 99, 132)"
+                        }]
+                }
+            })
+            .catch(function(error) {
+                console.log(error)
+                alert("Ops! Algo deu errado. Não foi possível recuperar as transações. Por favor tente novamente")
+            });
+    }
+
+    
+    onMount(getTransactions);
 </script>
 
 
 <div>
     <div class="row">
-        <MiniCard title="Saldo Atual" value="{revenueSum - expenseSum}" type="balance" icon={faLandmark} />
+        <MiniCard title="Saldo Atual" value="{currentMoney}" type="balance" icon={faLandmark} />
         <MiniCard title="Receitas" value="{revenueSum}" type="revenue" icon={faHandHoldingUsd} />
         <MiniCard title="Despesas" value="{expenseSum}" type="expense" icon={faReceipt} />
-        <MiniCard title="Balanço" value="0" type="profit" icon={faPiggyBank} />
+        <MiniCard title="Balanço" value="{balance}" type="profit" icon={faPiggyBank} />
     </div>
     <div class="row">
         <div class="card">
-            <label class="card-title">Despesas do mês</label>
+            <label for="" class="card-title">Despesas do mês</label>
+            <div>
+                <Line 
+                    data={chartDataExpense}
+                    options={commonChartOptions}
+                    height={400}
+                />
+            </div>
         </div>
         <div class="card">
-            <label class="card-title">Receitas do mês</label>
-        </div>
-        <div class="card">
-            <label class="card-title">Receitas x Despesas dos últimos 6 meses</label>
-        </div>
-        <div class="card">
-            <label class="card-title">Frequência de gastos</label>
+            <label for="" class="card-title">Receitas do mês</label>
+            <div>
+                <Line 
+                    data={chartDataRevenue}
+                    options={commonChartOptions}
+                    height={400}
+                />
+            </div>
         </div>
     </div>
     <button class="add-transaction" on:click={setTransacOptionsVisible}>
@@ -78,12 +166,12 @@
     <AddExpenseModal 
         isVisible={expenseModalVisible}
         setVisible={setExpenseModalVisible}
-        addExpenseCallback={addExpense}
+        addExpenseCallback={getTransactions}
     />
     <AddRevenueModal
         isVisible={revenueModalVisible}
         setVisible={setRevenueModalVisible}
-        addRevenueCallback={addRevenue}
+        addRevenueCallback={getTransactions}
     />
 </div>
 
@@ -104,7 +192,7 @@
         font-size: 14px;
     }
     .add-transaction {
-        position: absolute;
+        position: fixed;
         right: 10px;
         bottom: 30px;
         background-color: #2061bd;

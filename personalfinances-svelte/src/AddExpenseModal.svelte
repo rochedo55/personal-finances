@@ -1,15 +1,18 @@
 <script>
+    import api from './services/api';
+    
     export let addExpenseCallback;
     export let setVisible;
     export let isVisible;
 
     let title;
     let value;
+    let date;
 
     function addExpense(e) {
         e.preventDefault();
 
-        if (title.trim() === '' || !value) {
+        if (title === '' || !value || date === '') {
             alert("Todos os campos são obrigatórios");
             return;
         }
@@ -19,10 +22,22 @@
             return;
         }
 
-        addExpenseCallback(value);
-        title = null;
-        value = null;
-        setVisible(false);
+        api
+            .post('expenses/', {
+                title,
+                date,
+                value
+            })
+            .then(() => {
+                addExpenseCallback();
+                setVisible(false);
+                title = '';
+                value = '';
+                date = '';
+            })
+            .catch(() => {
+                alert("Ops! Algo deu errado. Não foi possível salvar despesa. Por favor tente novamente");
+            });
     }
 </script>
 
@@ -50,6 +65,15 @@
                         id="valueExpense" 
                         placeholder="Valor..." 
                         bind:value={value}
+                    />
+                </div>
+                <div className="form-group">
+                    <p>Adicione a data da despesa</p>
+                    <input 
+                        type="date" 
+                        id="dateReceita" 
+                        placeholder="18/11/2020"
+                        bind:value={date}
                     />
                 </div>
             </div>
