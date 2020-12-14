@@ -25,6 +25,16 @@
                             v-model="value"
                         />
                     </div>
+                    <div className="form-group">
+                        <p>Adicione a data da receita</p>
+                        <input 
+                            type="date" 
+                            id="dateReceita" 
+                            placeholder="18/11/2020"
+                            v-model="date"
+                            
+                        />
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button class="add" id="btnAddReceita" type="submit">Adicionar</button>
@@ -35,12 +45,15 @@
 </template>
 
 <script>
+import api from '../services/api';
+
 export default {
     props:['classVisible'],
     data(){
         return{
             title: '',
-            value: ''
+            value: '',
+            date: ''
         }
     },
     methods: {
@@ -48,7 +61,7 @@ export default {
             this.$emit('setRevenueModalVisible', false);
         },
         addRevenue: function() {
-            if (this.title.trim() === '' || this.value.trim() === '') {
+            if (this.title.trim() === '' || this.value.trim() === '' || this.date.trim() === '') {
                 alert("Todos os campos são obrigatórios");
                 return;
             }
@@ -58,8 +71,22 @@ export default {
                 return;
             }
 
-            this.$emit('addRevenueCallback', Number(this.value));
-            this.close();
+            api
+                .post("revenues/", {
+                    title: this.title,
+                    value: this.value,
+                    date: this.date
+                })
+                .then(() => {
+                    this.$emit('addRevenueCallback');
+                    this.close();
+                    this.title = ''
+                    this.value = ''
+                    this.date = ''
+                })
+                .catch(() => {
+                    alert("Ops! Algo deu errado. Não foi possível salvar receita. Por favor tente novamente");
+                });
         }
     }
 

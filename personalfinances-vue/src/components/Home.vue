@@ -4,20 +4,20 @@
             <MiniCard title="Saldo Atual" :value="revenueSum - expenseSum" type="balance" icon="landmark" />
             <MiniCard title="Receitas" :value="revenueSum" type="revenue" icon="hand-holding-usd" />
             <MiniCard title="Despesas" :value="expenseSum" type="expense" icon="receipt" />
-            <MiniCard title="Balanço" value="0" type="profit" icon="piggy-bank" />
+            <MiniCard title="Balanço" :value="balance" type="profit" icon="piggy-bank" />
         </div>
         <div class="row">
             <div class="card">
                 <label class="card-title">Despesas do mês</label>
+                <div>
+                    <line-chart v-if="loadedApiData" :chartData="chartDataExpense" />
+                </div>
             </div>
             <div class="card">
                 <label class="card-title">Receitas do mês</label>
-            </div>
-            <div class="card">
-                <label class="card-title">Receitas x Despesas dos últimos 6 meses</label>
-            </div>
-            <div class="card">
-                <label class="card-title">Frequência de gastos</label>
+                <div>
+                    <line-chart v-if="loadedApiData" :chartData="chartDataRevenue" />
+                </div>
             </div>
         </div>
         <button class="add-transaction" v-on:click="setTransacOptionsVisible">
@@ -37,63 +37,127 @@
         />
         <AddExpenseModal 
             :classVisible="expenseModalVisible" 
-            v-on:addExpenseCallback="addExpense" 
+            v-on:addExpenseCallback="getTransactions" 
             v-on:setExpenseModalVisible="setExpenseModalVisible" 
         />
         <AddRevenueModal
             :classVisible="revenueModalVisible"
-            v-on:addRevenueCallback="addRevenue"
+            v-on:addRevenueCallback="getTransactions"
             v-on:setRevenueModalVisible="setRevenueModalVisible"
         />
     </div>
 </template>
 
 <script>
+import LineChart from './LineChart';
 import MiniCard from './MiniCard.vue'
 import ButtonAddTransac from './ButtonAddTransac'
 import AddExpenseModal from './AddExpenseModal'
 import AddRevenueModal from './AddRevenueModal'
 
-export default {
-  components: {
-    MiniCard,
-    ButtonAddTransac,
-    AddExpenseModal,
-    AddRevenueModal
-  },
-  data: function() {
-      return {
-          showTransacOptions: false,
-          hideTransacOptions: false,
-          revenueSum: 0,
-          expenseSum: 0,
-          classTransacOptionsVisible: '',
-          expenseModalVisible: false,
-          revenueModalVisible: false
-      }
-  },
-  methods: {
-      setTransacOptionsVisible: function() {
-          if (this.classTransacOptionsVisible === '' || this.classTransacOptionsVisible === 'hide') {
-              this.classTransacOptionsVisible = 'show';
-          } else {
-              this.classTransacOptionsVisible = 'hide';
-          }
-      },
-      addRevenue: function(value) {
-          this.revenueSum += value;
-      },
-      addExpense: function(value) {
-          this.expenseSum += value;
-      },
-      setExpenseModalVisible: function(isVisible) {
-          this.expenseModalVisible = isVisible;
-      },
-      setRevenueModalVisible: function(isVisible) {
-          this.revenueModalVisible = isVisible;
-      }
+import api from '../services/api';
 
-  } 
+import { groupTransactionsByDate } from '../utils/TransactionsUtils'
+
+export default {
+    components: {
+        MiniCard,
+        ButtonAddTransac,
+        AddExpenseModal,
+        AddRevenueModal,
+        LineChart
+    },
+    data: function() {
+        return {
+            showTransacOptions: false,
+            hideTransacOptions: false,
+            classTransacOptionsVisible: '',
+            expenseModalVisible: false,
+            revenueModalVisible: false,
+            revenueSum: 0,
+            expenseSum: 0,
+            balance: 0,
+            currentMoney: 0,
+            expensesCurrentMonth: [],
+            revenuesCurrentMonth: [],
+            chartDataRevenue: {},
+            chartDataExpense: {},
+            loadedApiData: false
+        }
+    },
+    methods: {
+        setTransacOptionsVisible: function() {
+            if (this.classTransacOptionsVisible === '' || this.classTransacOptionsVisible === 'hide') {
+                this.classTransacOptionsVisible = 'show';
+            } else {
+                this.classTransacOptionsVisible = 'hide';
+            }
+        },
+        addRevenue: function(value) {
+            this.revenueSum += value;
+        },
+        addExpense: function(value) {
+            this.expenseSum += value;
+        },
+        setExpenseModalVisible: function(isVisible) {
+            this.expenseModalVisible = isVisible;
+        },
+        setRevenueModalVisible: function(isVisible) {
+            this.revenueModalVisible = isVisible;
+        },
+        getTransactions: function() {
+            this.loadedApiData = false;
+
+            Promise
+                .all([
+                    api.get("/metrics"), 
+                    api.get("/expenses/?currentMonth=true"),
+                    api.get("/revenues/?currentMonth=true")
+                ])
+                .then(results => {
+                    const metrics = results[0].data;
+
+                    this.balance = metrics.balance;
+                    this.currentMoney = metrics.currentMoney;
+                    this.expenseSum = metrics.expensesCurrentMonthSum;
+                    this.revenueSum = metrics.revenuesCurrentMonthSum;
+
+                    this.expensesCurrentMonth = groupTransactionsByDate(results[1].data);
+                    this.revenuesCurrentMonth = groupTransactionsByDate(results[2].data);
+
+                    this.chartDataRevenue = {
+                        labels: this.revenuesCurrentMonth.map(revenue => revenue[0]),
+                        datasets: [{
+                            label: "Despesas por data",
+                            fill: true,
+                            data: this.revenuesCurrentMonth.map(revenue => revenue[1]),
+                            borderColor: "rgb(50, 168, 82)",
+                            backgroundColor: "rgb(50, 168, 82)"
+                        }]
+                    }
+                    
+                    this.chartDataExpense = {
+                        labels: this.expensesCurrentMonth.map(expense => expense[0]),
+                        datasets: [{
+                            label: "Despesas por data",
+                            fill: true,
+                            data: this.expensesCurrentMonth.map(expense => expense[1]),
+                            borderColor: "rgb(255, 99, 132)",
+                            backgroundColor: "rgb(255, 99, 132)"
+                        }]
+                    }
+
+                    this.loadedApiData = true;
+                })
+                .catch(function(error) {
+                    console.log(error)
+                    alert("Ops! Algo deu errado. Não foi possível recuperar as transações. Por favor tente novamente")
+                });
+        }
+    },
+    mounted: function() {
+        this.getTransactions();
+    }
 }
 </script>
 

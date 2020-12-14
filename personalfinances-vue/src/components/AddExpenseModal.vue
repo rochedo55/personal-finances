@@ -12,7 +12,7 @@
                         <input 
                             type="text" 
                             id="titleExpense" 
-                            v-model="expenseTitle"
+                            v-model="title"
                             placeholder="Titulo..." 
                         />
                     </div>
@@ -21,8 +21,18 @@
                         <input 
                             type="number" 
                             id="valueExpense" 
-                            v-model="expenseValue"
+                            v-model="value"
                             placeholder="Valor"
+                        />
+                    </div>
+                    <div className="form-group">
+                        <p>Adicione a data da despesa</p>
+                        <input 
+                            type="date" 
+                            id="dateDespesa" 
+                            placeholder="18/11/2020"
+                            v-model="date"
+                            
                         />
                     </div>
                 </div>
@@ -35,12 +45,15 @@
 </template>
 
 <script>
+import api from '../services/api'
+
 export default {
     props: [ 'classVisible'],
     data() {
         return {
-            expenseTitle : '',
-            expenseValue : '' 
+            title : '',
+            value : '' ,
+            date :  ''
         }
     },
     methods: {
@@ -48,18 +61,32 @@ export default {
             this.$emit('setExpenseModalVisible', false);
         },
         AddExpense(){
-            if (this.expenseTitle.trim() === '' || this.expenseValue === '') {
+            if (this.title.trim() === '' || this.value === '' || this.date === '') {
                 alert("Todos os campos são obrigatórios");
                 return;
             }
             
-            if (this.expenseValue < 0) {
+            if (this.value < 0) {
                 alert("Valor da receita inválido");
                 return;
             }
-
-            this.$emit('addExpenseCallback', Number(this.expenseValue));
-            this.close();
+            
+            api
+                .post('expenses/', {
+                    title: this.title,
+                    date: this.date,
+                    value: this.value
+                })
+                .then(() => {
+                    this.$emit('addExpenseCallback');
+                    this.close();
+                    this.title = '';
+                    this.value = '';
+                    this.date = '';
+                })
+                .catch(() => {
+                    alert("Ops! Algo deu errado. Não foi possível salvar despesa. Por favor tente novamente");
+                });
         }   
 
     }
