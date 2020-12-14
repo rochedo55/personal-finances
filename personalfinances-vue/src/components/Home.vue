@@ -179,7 +179,7 @@ export default {
     }
 
     .add-transaction {
-        position: absolute;
+        position: fixed;
         right: 10px;
         bottom: 30px;
         background-color: #2061bd;

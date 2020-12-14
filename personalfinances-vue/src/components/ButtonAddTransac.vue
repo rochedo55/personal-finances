@@ -17,7 +17,7 @@
 
 <style scoped>
     .add-expense {
-        position: absolute;
+        position: fixed;
         /* padding: 15px 17px; */
         border-radius: 50%;
         color: #FFF;
@@ -52,7 +52,7 @@
     }
 
     .add-revenue {
-        position: absolute;
+        position: fixed;
         /* padding: 14px 15px; */
         border-radius: 50%;
         color: #FFF;
