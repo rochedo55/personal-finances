@@ -17,9 +17,9 @@ exports.list = function(req, res) {
         });
 
         res.json(revenuesCurrentMonth);
-    }
-
-    res.json(revenues);
+    } else {
+        res.json(revenues);
+    }    
 }
 
 exports.create = function(req, res) {

@@ -16,9 +16,9 @@ exports.list = function(req, res) {
         });
 
         res.json(expensesCurrentMonth);
+    } else {
+        res.json(expenses);
     }
-
-    res.json(expenses);
 }
 
 exports.create = function(req, res) {

@@ -33,17 +33,3 @@ exports.index = function (req, res) {
         balance 
     });
 }
-
-
-
-// exports.getBalance = function (req, res) {
-//     const revenues = db.get("revenues").value();
-//     const expenses = db.get("expenses").value();
-
-//     const revenuesSum = revenues.reduce((accumulator, revenue) => accumulator + revenue.value, 0);
-//     const expensesSum = expenses.reduce((accumulator, expense) => accumulator + expense.value, 0);
-
-//     const balance = revenuesSum - expensesSum;
-
-//     res.json({ balance });
-// }
